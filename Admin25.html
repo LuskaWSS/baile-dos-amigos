@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administração - Status das Mesas</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+    select { padding: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Administração das Mesas</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Mesa</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tbody-mesas">
+      <!-- Mesas serão listadas aqui -->
+    </tbody>
+  </table>
+
+  <script>
+    const mesas = [
+      { id: 1, status: 'disponivel' },
+      { id: 2, status: 'disponivel' },
+      { id: 3, status: 'ocupada' },
+      { id: 4, status: 'disponivel' },
+      { id: 5, status: 'ocupada' },
+    ];
+
+    const tbody = document.getElementById('tbody-mesas');
+
+    function renderAdmin() {
+      tbody.innerHTML = '';
+      mesas.forEach(mesa => {
+        const tr = document.createElement('tr');
+        
+        const tdId = document.createElement('td');
+        tdId.textContent = `Mesa ${mesa.id}`;
+        tr.appendChild(tdId);
+
+        const tdStatus = document.createElement('td');
+        const select = document.createElement('select');
+        ['disponivel', 'ocupada'].forEach(status => {
+          const option = document.createElement('option');
+          option.value = status;
+          option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+          if (mesa.status === status) option.selected = true;
+          select.appendChild(option);
+        });
+        select.onchange = (e) => {
+          mesa.status = e.target.value;
+          // Atualize a outra tela se quiser, ou salve no backend
+        };
+        tdStatus.appendChild(select);
+        tr.appendChild(tdStatus);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    renderAdmin();
+  </script>
+</body>
+</html>
