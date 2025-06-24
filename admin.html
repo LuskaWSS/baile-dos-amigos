@@ -84,17 +84,52 @@
 
     function carregarMesas() {
       const lista = document.getElementById('listaMesas');
-      mesas.forEach(mesa => {
+      lista.innerHTML = '';
+      mesas.forEach((mesa, index) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${mesa.numero}</td>
-          <td>${mesa.status}</td>
-          <td>${mesa.nome}</td>
-          <td>${mesa.pago}</td>
-          <td>${mesa.checkin}</td>
+          <td>
+            <select onchange="mesas[${index}].status = this.value; renderizarMesas()">
+              <option value="Livre" ${mesa.status === 'Livre' ? 'selected' : ''}>Livre</option>
+              <option value="Ocupada" ${mesa.status === 'Ocupada' ? 'selected' : ''}>Ocupada</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" value="${mesa.nome}" oninput="mesas[${index}].nome = this.value">
+          </td>
+          <td>
+            <select onchange="mesas[${index}].pago = this.value">
+              <option value="Não" ${mesa.pago === 'Não' ? 'selected' : ''}>Não</option>
+              <option value="Sim" ${mesa.pago === 'Sim' ? 'selected' : ''}>Sim</option>
+            </select>
+          </td>
+          <td>
+            <select onchange="mesas[${index}].checkin = this.value; renderizarMesas()">
+              <option value="Não" ${mesa.checkin === 'Não' ? 'selected' : ''}>Não</option>
+              <option value="Sim" ${mesa.checkin === 'Sim' ? 'selected' : ''}>Sim</option>
+            </select>
+          </td>
         `;
         lista.appendChild(tr);
       });
+    }
+
+    function renderizarMesas() {
+      if (typeof container !== 'undefined') {
+        container.innerHTML = '';
+        mesas.forEach(mesa => {
+          const div = document.createElement('div');
+          if (mesa.checkin === 'Sim') {
+            div.className = 'mesa checkin';
+          } else {
+            div.className = 'mesa ' + (mesa.status === 'Livre' ? 'livre' : 'ocupada');
+          }
+          div.textContent = mesa.numero;
+          div.onclick = () => alert(`Mesa ${mesa.numero}: ${mesa.status}\nCheck-in: ${mesa.checkin}`);
+          container.appendChild(div);
+        });
+      }
     }
   </script>
 </body>
