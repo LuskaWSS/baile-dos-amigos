@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Baile dos Amigos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: url('images/fundo-baile.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+    }
+    h1 {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      margin: 0;
+    }
+    #login, #painel {
+      margin-top: 30px;
+    }
+    input[type="password"] {
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: rgba(0,0,0,0.7);
+    }
+    th, td {
+      border: 1px solid #fff;
+      padding: 8px 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin - Baile dos Amigos</h1>
+  <div id="login">
+    <p>Digite a senha:</p>
+    <input type="password" id="senha">
+    <button onclick="verificarSenha()">Entrar</button>
+  </div>
+
+  <div id="painel" style="display:none;">
+    <table>
+      <thead>
+        <tr>
+          <th>Mesa</th>
+          <th>Status</th>
+          <th>Nome</th>
+          <th>Pago</th>
+          <th>Check-in</th>
+        </tr>
+      </thead>
+      <tbody id="listaMesas"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const senhaCorreta = 'baile2025';
+    const mesas = [];
+    for (let i = 1; i <= 120; i++) {
+      mesas.push({ numero: i, status: 'Livre', nome: '', pago: 'Não', checkin: 'Não' });
+    }
+
+    function verificarSenha() {
+      const senha = document.getElementById('senha').value;
+      if (senha === senhaCorreta) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('painel').style.display = 'block';
+        carregarMesas();
+      } else {
+        alert('Senha incorreta.');
+      }
+    }
+
+    function carregarMesas() {
+      const lista = document.getElementById('listaMesas');
+      mesas.forEach(mesa => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${mesa.numero}</td>
+          <td>${mesa.status}</td>
+          <td>${mesa.nome}</td>
+          <td>${mesa.pago}</td>
+          <td>${mesa.checkin}</td>
+        `;
+        lista.appendChild(tr);
+      });
+    }
+  </script>
+</body>
+</html>
